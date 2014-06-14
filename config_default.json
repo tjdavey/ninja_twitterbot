@@ -1,7 +1,10 @@
 {
-	"template": {
-		""
-	}
+	"tweet": {
+		"template": "Current Temperature and Humidity: {temp} degrees Celcius, {humid}% relative humidity",
+		"latitude": "-19.260565",
+		"longitude": "146.818502",
+		"place_id": "0013cae44d65aff9"
+	},
 	"twitter": {
 		"consumer_key": "",
 		"consumer_secret": "",
@@ -9,7 +12,7 @@
 		"access_token_secret": ""
 	},
 	"ninja": {
-		"api_access_key": "",
+		"token": "",
 		"sensors": {
 			"temp": "",
 			"humid": ""

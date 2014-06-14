@@ -1,50 +1,36 @@
 import webapp2
-import os
-import json
 import logging
-import httplib2
-import tweepy
+import json
 
-from google.appengine.api import urlfetch
 from google.appengine.ext.webapp.util import run_wsgi_app
+
+from ninja import NinjaLiveData
+import twitter
 
 config = json.loads(open('config.json').read())
 
-twitter_conf = config['twitter']
-ninja_conf = config['ninja']
-
-
-try:
-	auth = tweepy.OAuthHandler(twitter_conf['consumer_key'], twitter_conf['consumer_secret'])
-	auth.set_access_token(tw_access_token, tw_access_token_secret)
-	api = tweepy.API(auth_handler=auth, api_root='/1.1', secure=True)
-except Exception as e:
-	logging.error(e)
-	service = None
-	api = None
+twapi = twitter.api(config.get('twitter', {}))	
+	
 class TweetHandler(webapp2.RequestHandler):
 
 	def get(self):
-		temp = self.retrieve(ninja_temp_sensor, ninja_api_key)
-		humid = self.retrieve(ninja_humidity_sensor, ninja_api_key)
-		self.tweet(temp, humid)
-
-	def retrieve(self, sensor, api_key):
-		url = "https://a.ninja.is/rest/v0/device/%{sensor}/data?interval=1min&fn=mean&user_access_token={api_key}".format(sensor=sensor, api_key=api_key)
-		logging.info(url)
-		fetch_result = urlfetch.fetch(url, deadline=20)
-		result = json.loads(fetch_result.content)
 		
-		if ['last_data'] in result and ['DA'] in result['last_data']:
-			data_point = result['data'][(len(result['data'])-1)]['v']
-		else:
-			data_point = None
-			
-		return last_point
-
-	def tweet(self, temperature, humidity):
-		api.update_status("Current Temperature and Humidity: %s degrees Celcius, %s%% relative humidity" % (temperature, humidity))
-
+		tweet_config = config.get("tweet", {})
+		ninja_data = NinjaLiveData(config.get("ninja", {}))
+		sensor_data = ninja_data.get_data()
+		
+		message = tweet_config.get("template").format(**sensor_data)
+		lat = tweet_config.get("lat")
+		long = tweet_config.get("long")
+		place_id = tweet_config.get("place_id")
+		
+		twapi.update_status(message, lat = lat, long = long, place_id = place_id);
+		
+		self.response.headers['Content-Type'] = 'application/json'   
+		output = {
+			'message': message
+		} 
+		self.response.out.write(json.dumps(output))
 
 app = webapp2.WSGIApplication([
     ('/tweet', TweetHandler)
