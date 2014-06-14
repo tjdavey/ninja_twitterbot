@@ -1,8 +1,9 @@
 import webapp2
-import logging
+import os
 import json
 
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.api import app_identity
 
 from ninja import NinjaLiveData
 import twitter
@@ -10,6 +11,17 @@ import twitter
 config = json.loads(open('config.json').read())
 
 twapi = twitter.api(config.get('twitter', {}))	
+	
+class RootHandler(webapp2.RequestHandler):
+	
+	def get(self):
+		
+		self.response.headers['Content-Type'] = 'application/json'   
+		output = {
+			'server': app_identity.get_application_id(),
+			'version': os.environ['CURRENT_VERSION_ID']
+		} 
+		self.response.out.write(json.dumps(output))
 	
 class TweetHandler(webapp2.RequestHandler):
 
@@ -33,7 +45,8 @@ class TweetHandler(webapp2.RequestHandler):
 		self.response.out.write(json.dumps(output))
 
 app = webapp2.WSGIApplication([
-    ('/tweet', TweetHandler)
+	(r'/', RootHandler),
+    (r'/tweet', TweetHandler)
 ])
 
 def main():

@@ -52,5 +52,5 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-
+# Don't include the config.json as this can include API keys and other sensitive settings.
 config.json
