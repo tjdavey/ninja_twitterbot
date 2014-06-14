@@ -1,0 +1,5 @@
+cron:
+
+- description: publish tweet
+  url: /tweet
+  schedule: every 1 hours synchronized
