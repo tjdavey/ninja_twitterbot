@@ -19,14 +19,10 @@ The following options are available in the `config.js` file.
 #### `tweet` - Tweet Configuration
 | field           | required | description                                                              |
 |-----------------|----------|--------------------------------------------------------------------------|
-| tweet.template  | Y        | A string containing any sensor data attribute substitutions (based on the sensor name specified in the NinjaBlocks sensor configuration) in the [Python Format language](https://docs.python.org/2/library/string.html#formatspec).
-eg. `"Current Temperature and Humidity: {temp} degrees Celcius, {humid}% relative humidity"`            |
-| tweet.latitude  | N        | The latitude of the location to be associated with the tweet.
-eg. `"-19.260565"`                                                                                      |
-| tweet.longitude | N        | The longitude of the location to be associated with the tweet.
-eg. `"146.818502"`                                                                                      |
-| tweet.place_id  | N        | The ID of the Twitter location this tweet will be associated with. You can select this from the results of the [Twitter reverse_geocode endpoint](https://dev.twitter.com/docs/api/1.1/get/geo/reverse_geocode) using above co-ordinates.
-eg. `"0013cae44d65aff9"`                                                                                 |
+| tweet.template  | Y        | A string containing any sensor data attribute substitutions (based on the sensor name specified in the NinjaBlocks sensor configuration) in the [Python Format language](https://docs.python.org/2/library/string.html#formatspec). eg. `"Current Temperature and Humidity: {temp} degrees Celcius, {humid}% relative humidity"` |
+| tweet.latitude  | N        | The latitude of the location to be associated with the tweet. eg. `"-19.260565"` |
+| tweet.longitude | N        | The longitude of the location to be associated with the tweet. eg. `"146.818502"` |
+| tweet.place_id  | N        | The ID of the Twitter location this tweet will be associated with. You can select this from the results of the [Twitter reverse_geocode endpoint](https://dev.twitter.com/docs/api/1.1/get/geo/reverse_geocode) using above co-ordinates. eg. `"0013cae44d65aff9"` |
 
 #### `twitter` - Twitter API Configuration
 
